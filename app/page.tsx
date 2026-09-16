@@ -8,6 +8,7 @@ import { ToolRail } from '@/components/ToolRail';
 import { CluePanel } from '@/components/CluePanel';
 import { ActionControls } from '@/components/ActionControls';
 import { IntroSequence } from '@/components/IntroSequence';
+import { ScenarioSequence } from '@/components/ScenarioSequence';
 
 const cases = [
   {
@@ -42,6 +43,7 @@ export default function Page() {
   const [caseIndex, setCaseIndex] = useState(0);
   const [activeTool, setActiveTool] = useState('');
   const [showIntro, setShowIntro] = useState(true);
+  const [activeScenario, setActiveScenario] = useState<string | null>(null);
   const [memoryState, setMemoryState] = useState<'READY' | 'CORRUPTED' | 'RESTORING' | 'UNAVAILABLE'>('READY');
   const [stabilityScore, setStabilityScore] = useState(91);
   const [editCount, setEditCount] = useState(0);
@@ -100,6 +102,10 @@ export default function Page() {
     return <IntroSequence onComplete={() => setShowIntro(false)} />;
   }
 
+  if (activeScenario) {
+    return <ScenarioSequence caseId={activeScenario} onComplete={() => setActiveScenario(null)} />;
+  }
+
   return (
     <main className="min-h-screen text-cyan-100 p-3 md:p-5" style={{ backgroundColor: '#0a0e27' }}>
       <div className="max-w-[1600px] mx-auto space-y-3">
@@ -141,7 +147,16 @@ export default function Page() {
               <div className="pointer-events-none absolute inset-0 border border-lime-400/30" />
               {memoryState === 'RESTORING' && <div className="absolute inset-0 bg-[#0a0e27]/80 flex items-center justify-center hud-text-cyan text-sm"><Activity className="mr-2 animate-spin" size={16} /> RESTORING...</div>}
             </div>
-            <ActionControls onExport={exportImage} onReset={reset} onPrevCase={() => changeCase(caseIndex - 1)} onNextCase={() => changeCase(caseIndex + 1)} caseNumber={currentCase.number} totalCases={cases.length} hasChanges={hasChanges} />
+            <ActionControls 
+              onExport={exportImage} 
+              onReset={reset} 
+              onPlayback={() => setActiveScenario(currentCase.number)}
+              onPrevCase={() => changeCase(caseIndex - 1)} 
+              onNextCase={() => changeCase(caseIndex + 1)} 
+              caseNumber={currentCase.number} 
+              totalCases={cases.length} 
+              hasChanges={hasChanges} 
+            />
           </div>
 
           <CluePanel clues={clues} onInvestigate={investigate} onAddToCase={(id) => setNotice(`CLUE ${id.toUpperCase()} ADDED TO CASE FILE`)} />

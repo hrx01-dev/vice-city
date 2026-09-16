@@ -6,6 +6,7 @@ import { Download, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 interface ActionControlsProps {
   onExport: () => void;
   onReset: () => void;
+  onPlayback: () => void;
   onPrevCase: () => void;
   onNextCase: () => void;
   caseNumber: string;
@@ -16,6 +17,7 @@ interface ActionControlsProps {
 export function ActionControls({
   onExport,
   onReset,
+  onPlayback,
   onPrevCase,
   onNextCase,
   caseNumber,
@@ -40,6 +42,14 @@ export function ActionControls({
       >
         <Download size={16} />
         EXPORT
+      </button>
+
+      <button
+        onClick={onPlayback}
+        className="hud-button flex items-center gap-2 border-lime-400 text-lime-400 hover:shadow-lime-400/50"
+      >
+        <RotateCcw size={16} className="rotate-180" />
+        PLAYBACK MEMORY
       </button>
 
       <button
