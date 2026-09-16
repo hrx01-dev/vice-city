@@ -7,6 +7,7 @@ import { StatusBar } from '@/components/StatusBar';
 import { ToolRail } from '@/components/ToolRail';
 import { CluePanel } from '@/components/CluePanel';
 import { ActionControls } from '@/components/ActionControls';
+import { IntroSequence } from '@/components/IntroSequence';
 
 const cases = [
   {
@@ -40,6 +41,7 @@ export default function Page() {
   const editorRef = useRef<ImageEditorRef>(null);
   const [caseIndex, setCaseIndex] = useState(0);
   const [activeTool, setActiveTool] = useState('');
+  const [showIntro, setShowIntro] = useState(true);
   const [memoryState, setMemoryState] = useState<'READY' | 'CORRUPTED' | 'RESTORING' | 'UNAVAILABLE'>('READY');
   const [stabilityScore, setStabilityScore] = useState(91);
   const [editCount, setEditCount] = useState(0);
@@ -93,6 +95,10 @@ export default function Page() {
     setNotice('EXPORT QUEUED // CASE FILE UPDATED');
     setEditCount((count) => count + 1);
   };
+
+  if (showIntro) {
+    return <IntroSequence onComplete={() => setShowIntro(false)} />;
+  }
 
   return (
     <main className="min-h-screen text-cyan-100 p-3 md:p-5" style={{ backgroundColor: '#0a0e27' }}>
