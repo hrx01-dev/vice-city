@@ -10,6 +10,7 @@ import { CluePanel } from '@/components/CluePanel';
 import { ActionControls } from '@/components/ActionControls';
 import { IntroSequence } from '@/components/IntroSequence';
 import { ScenarioSequence } from '@/components/ScenarioSequence';
+import { FinalSequence } from '@/components/FinalSequence';
 import { LandingPage } from '@/components/LandingPage';
 import { VicePalm } from '@/components/VicePalm';
 
@@ -48,6 +49,8 @@ export default function Page() {
   const [showLanding, setShowLanding] = useState(true);
   const [showIntro, setShowIntro] = useState(false);
   const [activeScenario, setActiveScenario] = useState<string | null>(null);
+  const [solvedCases, setSolvedCases] = useState<Set<string>>(new Set());
+  const [showFinalSequence, setShowFinalSequence] = useState(false);
   const [memoryState, setMemoryState] = useState<'READY' | 'CORRUPTED' | 'RESTORING' | 'UNAVAILABLE'>('READY');
   const [stabilityScore, setStabilityScore] = useState(91);
   const [editCount, setEditCount] = useState(0);
@@ -98,7 +101,9 @@ export default function Page() {
   };
 
   const exportImage = () => {
-    setNotice('EXPORT QUEUED // CASE FILE UPDATED');
+    setNotice('MEMORY RECOVERED // SEQUENCE INITIATED');
+    setActiveScenario(currentCase.number);
+    setSolvedCases(prev => new Set(prev).add(currentCase.number));
     setEditCount((count) => count + 1);
   };
 
@@ -119,7 +124,24 @@ export default function Page() {
   }
 
   if (activeScenario) {
-    return <ScenarioSequence caseId={activeScenario} onComplete={() => setActiveScenario(null)} />;
+    return <ScenarioSequence caseId={activeScenario} onComplete={() => {
+      setActiveScenario(null);
+      // If we just solved the last case, trigger the finale
+      // We check size against cases.length, noting that solvedCases state updates async, 
+      // but the set itself we check here might already be updated since this render happened after exportImage set it.
+      // Wait, actually, the state passed here is the updated state from the render!
+      if (solvedCases.size === cases.length) {
+        setShowFinalSequence(true);
+      }
+    }} />;
+  }
+
+  if (showFinalSequence) {
+    return <FinalSequence onComplete={() => {
+      setShowFinalSequence(false);
+      setSolvedCases(new Set());
+      setCaseIndex(0);
+    }} />;
   }
 
   return (
