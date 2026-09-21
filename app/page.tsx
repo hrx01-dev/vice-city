@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useMemo, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import ImageEditor, { type ImageEditorRef } from '@unlayer/react-image-editor';
 import { Activity, AlertTriangle, Cpu, FileSearch, Radio, Save } from 'lucide-react';
 import { StatusBar } from '@/components/StatusBar';
@@ -9,24 +10,26 @@ import { CluePanel } from '@/components/CluePanel';
 import { ActionControls } from '@/components/ActionControls';
 import { IntroSequence } from '@/components/IntroSequence';
 import { ScenarioSequence } from '@/components/ScenarioSequence';
+import { LandingPage } from '@/components/LandingPage';
+import { VicePalm } from '@/components/VicePalm';
 
 const cases = [
   {
     number: '027',
-    image: '/case-evidence.png',
-    original: '/case-evidence.png',
+    image: '/evidence_027.jpg',
+    original: '/evidence_027.jpg',
     title: 'NIGHT SHIFT // EAST LOS SANTOS',
   },
   {
     number: '028',
-    image: '/case-evidence.png',
-    original: '/case-evidence.png',
+    image: '/evidence_028.jpg',
+    original: '/evidence_028.jpg',
     title: 'SIGNAL LOST // VESPUCCI BLVD',
   },
   {
     number: '029',
-    image: '/case-evidence.png',
-    original: '/case-evidence.png',
+    image: '/evidence_029.jpg',
+    original: '/evidence_029.jpg',
     title: 'BLACKOUT // CYPRESS FLATS',
   },
 ];
@@ -42,7 +45,8 @@ export default function Page() {
   const editorRef = useRef<ImageEditorRef>(null);
   const [caseIndex, setCaseIndex] = useState(0);
   const [activeTool, setActiveTool] = useState('');
-  const [showIntro, setShowIntro] = useState(true);
+  const [showLanding, setShowLanding] = useState(true);
+  const [showIntro, setShowIntro] = useState(false);
   const [activeScenario, setActiveScenario] = useState<string | null>(null);
   const [memoryState, setMemoryState] = useState<'READY' | 'CORRUPTED' | 'RESTORING' | 'UNAVAILABLE'>('READY');
   const [stabilityScore, setStabilityScore] = useState(91);
@@ -98,6 +102,18 @@ export default function Page() {
     setEditCount((count) => count + 1);
   };
 
+  if (showLanding) {
+    return (
+      <LandingPage
+        onEnter={(selectedCase) => {
+          setCaseIndex(selectedCase);
+          setShowLanding(false);
+          setShowIntro(true);
+        }}
+      />
+    );
+  }
+
   if (showIntro) {
     return <IntroSequence onComplete={() => setShowIntro(false)} />;
   }
@@ -107,30 +123,48 @@ export default function Page() {
   }
 
   return (
-    <main className="min-h-screen text-cyan-100 p-3 md:p-5" style={{ backgroundColor: '#0a0e27' }}>
-      <div className="max-w-[1600px] mx-auto space-y-3">
+    <main className="hud-background min-h-screen text-cyan-100 p-3 md:p-5 relative overflow-hidden">
+      <VicePalm className="vice-palm left-2 bottom-2 text-pink-500/25 hidden xl:block" />
+      <VicePalm className="vice-palm right-2 bottom-2 text-cyan-400/20 hidden xl:block scale-x-[-1]" />
+
+      <div className="max-w-[1600px] mx-auto space-y-3 relative">
         <StatusBar caseNumber={currentCase.number} memoryState={memoryState} stabilityScore={stabilityScore} editCount={editCount} />
 
-        <header className="flex flex-col md:flex-row md:items-end justify-between gap-3 px-1">
+        <motion.header
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="vice-sunset flex flex-col md:flex-row md:items-end justify-between gap-3 px-1 pt-2"
+        >
           <div>
-            <div className="flex items-center gap-2 text-cyan-400 text-xs font-mono tracking-[0.25em]">
-              <Cpu size={14} /> NEURAL ARCHIVE / FORENSIC INTERFACE
+            <div className="flex items-center gap-2 text-cyan-400 text-[11px] tracking-[0.35em]">
+              <Cpu size={14} /> VICE CITY P.D. // NEURAL ARCHIVE DIVISION
             </div>
-            <h1 className="glitch-effect hud-text-lime text-3xl md:text-5xl font-black tracking-tight" data-text="MEMORY DEALER">MEMORY DEALER</h1>
-            <p className="text-cyan-300/60 font-mono text-xs tracking-widest">{currentCase.title}</p>
+            <h1
+              className="glitch-effect font-display text-vice-gradient text-5xl md:text-7xl tracking-wide leading-none"
+              data-text="MEMORY DEALER"
+            >
+              MEMORY DEALER
+            </h1>
+            <p className="text-cyan-300/60 text-xs tracking-widest mt-1">{currentCase.title}</p>
           </div>
-          <div className="flex gap-2 items-center text-xs font-mono text-cyan-300/80">
-            <Radio size={14} className="text-lime-400 animate-pulse" /> LIVE UPLINK <span className="text-lime-400">SECURE</span>
+          <div className="flex gap-2 items-center text-xs tracking-widest text-cyan-300/80">
+            <Radio size={14} className="text-pink-400 animate-pulse" /> LIVE UPLINK <span className="text-pink-400">SECURE</span>
           </div>
-        </header>
+        </motion.header>
 
         <section className="grid grid-cols-1 lg:grid-cols-[80px_minmax(0,1fr)_300px] gap-3 items-stretch">
           <ToolRail onToolClick={markEdit} activeTool={activeTool} />
 
-          <div className="hud-panel hud-border min-w-0 p-3 flex flex-col gap-3">
-            <div className="flex justify-between items-center text-xs font-mono text-cyan-300/70">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut', delay: 0.15 }}
+            className="hud-panel hud-border min-w-0 p-3 flex flex-col gap-3"
+          >
+            <div className="flex justify-between items-center text-xs text-cyan-300/70">
               <span className="flex items-center gap-2"><FileSearch size={14} /> EVIDENCE FRAME // RAW MEMORY</span>
-              <span className="text-lime-400">{notice}</span>
+              <span className="text-pink-400">{notice}</span>
             </div>
             <div className="relative min-h-[390px] flex-1 bg-black/50 overflow-hidden border border-cyan-400/30">
               <ImageEditor
@@ -144,26 +178,26 @@ export default function Page() {
                 onLoadError={() => setMemoryState('UNAVAILABLE')}
                 onSave={() => { setEditCount((count) => count + 1); setNotice('MEMORY SAVED TO CASE FILE'); }}
               />
-              <div className="pointer-events-none absolute inset-0 border border-lime-400/30" />
-              {memoryState === 'RESTORING' && <div className="absolute inset-0 bg-[#0a0e27]/80 flex items-center justify-center hud-text-cyan text-sm"><Activity className="mr-2 animate-spin" size={16} /> RESTORING...</div>}
+              <div className="pointer-events-none absolute inset-0 border border-pink-400/30" />
+              {memoryState === 'RESTORING' && <div className="absolute inset-0 bg-[#12081f]/80 flex items-center justify-center hud-text-cyan text-sm"><Activity className="mr-2 animate-spin" size={16} /> RESTORING...</div>}
             </div>
-            <ActionControls 
-              onExport={exportImage} 
-              onReset={reset} 
+            <ActionControls
+              onExport={exportImage}
+              onReset={reset}
               onPlayback={() => setActiveScenario(currentCase.number)}
-              onPrevCase={() => changeCase(caseIndex - 1)} 
-              onNextCase={() => changeCase(caseIndex + 1)} 
-              caseNumber={currentCase.number} 
-              totalCases={cases.length} 
-              hasChanges={hasChanges} 
+              onPrevCase={() => changeCase(caseIndex - 1)}
+              onNextCase={() => changeCase(caseIndex + 1)}
+              caseNumber={currentCase.number}
+              totalCases={cases.length}
+              hasChanges={hasChanges}
             />
-          </div>
+          </motion.div>
 
           <CluePanel clues={clues} onInvestigate={investigate} onAddToCase={(id) => setNotice(`CLUE ${id.toUpperCase()} ADDED TO CASE FILE`)} />
         </section>
 
-        <footer className="flex flex-col md:flex-row justify-between gap-2 border-t border-lime-400/30 pt-3 text-[10px] font-mono tracking-widest text-cyan-300/50">
-          <span>MEMORY DEALER OS v2.7.4 // LOS SANTOS NODE</span>
+        <footer className="flex flex-col md:flex-row justify-between gap-2 border-t border-pink-400/30 pt-3 text-[10px] tracking-widest text-cyan-300/50">
+          <span>MEMORY DEALER OS v2.7.4 // VICE CITY NODE</span>
           <span className="flex items-center gap-2"><Save size={12} /> AUTOSAVE ACTIVE <AlertTriangle size={12} className="text-orange-400" /> HANDLE WITH CARE</span>
         </footer>
       </div>

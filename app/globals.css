@@ -43,6 +43,9 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --font-display: var(--font-bebas);
+  --font-mono: var(--font-fragment);
+  --font-serif: var(--font-instrument);
 }
 
 :root {
@@ -162,70 +165,128 @@
   }
 }
 
-/* GTA-like futuristic forensic workstation styles */
+/* Vice City // Memory Dealer - GTA VI-inspired forensic workstation styles */
 :root {
-  --hud-dark: #0a0e27;
-  --acid-lime: #ccff00;
-  --cyan-accent: #00ffff;
-  --grid-color: rgba(204, 255, 0, 0.05);
-  --scanline-color: rgba(204, 255, 0, 0.03);
-  --memory-green: #00ff41;
+  --hud-dark: #12081f;
+  --vice-pink: #ff2f8f;
+  --vice-pink-soft: #ff7ec4;
+  --vice-orange: #ff8a3d;
+  --vice-purple: #7a2ce0;
+  --cyan-accent: #2de3ff;
+  --grid-color: rgba(255, 47, 143, 0.06);
+  --scanline-color: rgba(255, 47, 143, 0.035);
+  --memory-signal: #ff2f8f;
 }
 
 .hud-background {
   background-color: var(--hud-dark);
-  background-image: 
+  background-image:
     linear-gradient(0deg, var(--scanline-color) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
   background-size: 100% 2px, 20px 100%;
   background-attachment: fixed;
 }
 
+/* Sunset horizon glow — the Vice City skyline-at-dusk signature */
+.vice-sunset {
+  position: relative;
+  isolation: isolate;
+}
+
+.vice-sunset::before {
+  content: '';
+  position: absolute;
+  inset: -40% -10% auto -10%;
+  height: 220px;
+  background: radial-gradient(
+    ellipse 60% 100% at 50% 0%,
+    rgba(255, 138, 61, 0.28),
+    rgba(255, 47, 143, 0.18) 45%,
+    transparent 75%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Filmic grain — a nod to restoring damaged photographic memory */
+.vice-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  animation: grainShift 0.6s steps(4) infinite;
+}
+
+@keyframes grainShift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-2%, 2%); }
+  50% { transform: translate(2%, -1%); }
+  75% { transform: translate(-1%, -2%); }
+  100% { transform: translate(0, 0); }
+}
+
 .hud-border {
-  border: 1px solid var(--acid-lime);
-  box-shadow: 0 0 8px rgba(204, 255, 0, 0.3), inset 0 0 8px rgba(204, 255, 0, 0.1);
+  border: 1px solid var(--vice-pink);
+  box-shadow: 0 0 8px rgba(255, 47, 143, 0.3), inset 0 0 8px rgba(255, 47, 143, 0.1);
 }
 
 .hud-border-cyan {
   border: 1px solid var(--cyan-accent);
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.3), inset 0 0 8px rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 8px rgba(45, 227, 255, 0.3), inset 0 0 8px rgba(45, 227, 255, 0.1);
 }
 
-.hud-text-lime {
-  color: var(--acid-lime);
-  font-family: 'Courier New', monospace;
+.hud-text-pink {
+  color: var(--vice-pink);
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(204, 255, 0, 0.5);
+  text-shadow: 0 0 10px rgba(255, 47, 143, 0.5);
 }
 
 .hud-text-cyan {
   color: var(--cyan-accent);
-  font-family: 'Courier New', monospace;
   font-weight: 700;
   letter-spacing: 0.05em;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  text-shadow: 0 0 10px rgba(45, 227, 255, 0.5);
+}
+
+/* Vice City sunset gradient type — for hero titles and case codenames */
+.text-vice-gradient {
+  background: linear-gradient(90deg, var(--vice-pink) 0%, var(--vice-orange) 50%, var(--vice-purple) 100%);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: gradientDrift 6s ease-in-out infinite;
+}
+
+@keyframes gradientDrift {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
 }
 
 .hud-button {
-  background-color: rgba(204, 255, 0, 0.1);
-  border: 1px solid var(--acid-lime);
-  color: var(--acid-lime);
+  background-color: rgba(255, 47, 143, 0.1);
+  border: 1px solid var(--vice-pink);
+  color: var(--vice-pink);
   padding: 0.5rem 1rem;
-  font-family: 'Courier New', monospace;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   font-size: 0.75rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: inset 0 0 4px rgba(204, 255, 0, 0.1);
+  box-shadow: inset 0 0 4px rgba(255, 47, 143, 0.1);
 }
 
 .hud-button:hover {
-  background-color: rgba(204, 255, 0, 0.2);
-  box-shadow: 0 0 12px rgba(204, 255, 0, 0.5), inset 0 0 4px rgba(204, 255, 0, 0.2);
+  background-color: rgba(255, 47, 143, 0.2);
+  box-shadow: 0 0 12px rgba(255, 47, 143, 0.5), inset 0 0 4px rgba(255, 47, 143, 0.2);
 }
 
 .hud-button:active {
@@ -233,8 +294,8 @@
 }
 
 .hud-panel {
-  background-color: rgba(10, 14, 39, 0.8);
-  border: 1px solid var(--acid-lime);
+  background-color: rgba(18, 8, 31, 0.8);
+  border: 1px solid var(--vice-pink);
   backdrop-filter: blur(10px);
 }
 
@@ -262,9 +323,9 @@
 
 .glitch-effect::after {
   animation: glitch 2s infinite reverse;
-  color: var(--acid-lime);
+  color: var(--vice-pink);
   z-index: -2;
-  text-shadow: 2px 0 var(--acid-lime);
+  text-shadow: 2px 0 var(--vice-pink);
 }
 
 @keyframes glitch {
@@ -294,15 +355,24 @@
   }
 }
 
-.pulse-lime {
-  animation: pulseLime 2s ease-in-out infinite;
+.pulse-pink {
+  animation: pulsePink 2s ease-in-out infinite;
 }
 
-@keyframes pulseLime {
+@keyframes pulsePink {
   0%, 100% {
-    text-shadow: 0 0 10px rgba(204, 255, 0, 0.5);
+    text-shadow: 0 0 10px rgba(255, 47, 143, 0.5);
   }
   50% {
-    text-shadow: 0 0 20px rgba(204, 255, 0, 0.8);
+    text-shadow: 0 0 20px rgba(255, 47, 143, 0.85);
   }
+}
+
+/* Palm silhouette — a cheap, iconic Vice City skyline accent */
+.vice-palm {
+  position: absolute;
+  width: 90px;
+  height: 130px;
+  pointer-events: none;
+  filter: drop-shadow(0 0 12px rgba(255, 47, 143, 0.25));
 }

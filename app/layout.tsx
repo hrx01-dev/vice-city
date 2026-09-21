@@ -1,10 +1,33 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Bebas_Neue, Fragment_Mono, Instrument_Serif } from 'next/font/google'
 import './globals.css'
+
+const bebasNeue = Bebas_Neue({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-bebas',
+  display: 'swap',
+})
+
+const fragmentMono = Fragment_Mono({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-fragment',
+  display: 'swap',
+})
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-instrument',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Memory Dealer - Case #027',
-  description: 'Futuristic forensic image investigation workstation. GTA-inspired cyberpunk interface for case analysis and evidence examination.',
+  description: 'A neon-soaked, GTA VI-inspired forensic memory investigation workstation for Vice City. Restore corrupted evidence, chase clues, and relive the case through the React Image Editor.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -27,7 +50,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: 'dark',
-  themeColor: '#0a0e27',
+  themeColor: '#12081f',
 }
 
 export default function RootLayout({
@@ -36,9 +59,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
+    <html lang="en" className={`${bebasNeue.variable} ${fragmentMono.variable} ${instrumentSerif.variable}`}>
+      <body className="antialiased font-mono">
         {children}
+        <div className="vice-grain" aria-hidden="true" />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

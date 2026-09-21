@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Download, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ActionControlsProps {
@@ -36,23 +37,29 @@ export function ActionControls({
 
   return (
     <div className="flex gap-2 flex-wrap">
-      <button
+      <motion.button
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
         onClick={onExport}
-        className="hud-button flex items-center gap-2 hover:shadow-lime-400/50"
+        className="hud-button flex items-center gap-2 hover:shadow-pink-400/50"
       >
         <Download size={16} />
         EXPORT
-      </button>
+      </motion.button>
 
-      <button
+      <motion.button
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
         onClick={onPlayback}
-        className="hud-button flex items-center gap-2 border-lime-400 text-lime-400 hover:shadow-lime-400/50"
+        className="hud-button flex items-center gap-2 border-pink-400 text-pink-400 hover:shadow-pink-400/50"
       >
         <RotateCcw size={16} className="rotate-180" />
         PLAYBACK MEMORY
-      </button>
+      </motion.button>
 
-      <button
+      <motion.button
+        whileHover={hasChanges ? { scale: 1.03 } : {}}
+        whileTap={hasChanges ? { scale: 0.97 } : {}}
         onClick={handleReset}
         className={`hud-button flex items-center gap-2 ${
           hasChanges ? 'hover:shadow-orange-400/50' : 'opacity-50'
@@ -61,53 +68,70 @@ export function ActionControls({
       >
         <RotateCcw size={16} />
         RESET
-      </button>
+      </motion.button>
 
       <div className="flex-1"></div>
 
       <div className="flex items-center gap-2">
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={onPrevCase}
           className="hud-button px-2 hover:shadow-cyan-400/50"
         >
           <ChevronLeft size={16} />
-        </button>
+        </motion.button>
         <span className="hud-text-cyan text-sm px-3 py-2 border border-cyan-400/50">
           #{caseNumber}/{totalCases}
         </span>
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={onNextCase}
           className="hud-button px-2 hover:shadow-cyan-400/50"
         >
           <ChevronRight size={16} />
-        </button>
+        </motion.button>
       </div>
 
-      {showResetConfirm && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-          <div className="hud-border bg-slate-900/95 p-6 max-w-sm">
-            <div className="hud-text-lime mb-4">RESET MEMORY?</div>
-            <p className="text-cyan-300 mb-6">All edits will be lost. Continue?</p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setShowResetConfirm(false);
-                  onReset();
-                }}
-                className="hud-button flex-1 bg-red-900/20 border-red-400 text-red-400 hover:shadow-red-400/50"
-              >
-                CONFIRM
-              </button>
-              <button
-                onClick={() => setShowResetConfirm(false)}
-                className="hud-button flex-1"
-              >
-                CANCEL
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {showResetConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="hud-border vice-sunset bg-slate-900/95 p-6 max-w-sm"
+            >
+              <div className="hud-text-pink mb-4">RESET MEMORY?</div>
+              <p className="text-cyan-300 mb-6">All edits will be lost. Continue?</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setShowResetConfirm(false);
+                    onReset();
+                  }}
+                  className="hud-button flex-1 bg-red-900/20 border-red-400 text-red-400 hover:shadow-red-400/50"
+                >
+                  CONFIRM
+                </button>
+                <button
+                  onClick={() => setShowResetConfirm(false)}
+                  className="hud-button flex-1"
+                >
+                  CANCEL
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
