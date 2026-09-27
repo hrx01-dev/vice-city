@@ -9,6 +9,8 @@ interface Clue {
   name: string;
   description: string;
   scanned: boolean;
+  added?: boolean;
+  discovered: boolean;
 }
 
 interface CluePanelProps {
@@ -31,13 +33,13 @@ export function CluePanel({ clues, onInvestigate, onAddToCase }: CluePanelProps)
         DISCOVERED CLUES
       </div>
       <div className="flex-1 overflow-y-auto space-y-2 text-xs">
-        {clues.length === 0 ? (
+        {clues.filter(c => c.discovered).length === 0 ? (
           <div className="hud-text-cyan opacity-60">
-            SCANNING FOR CLUES...
+            USE 'EXTRACT' TOOL ON IMAGE TO FIND CLUES...
           </div>
         ) : (
           <AnimatePresence initial={false}>
-            {clues.map((clue, i) => (
+            {clues.filter(c => c.discovered).map((clue, i) => (
               <motion.div
                 key={clue.id}
                 layout
@@ -70,17 +72,19 @@ export function CluePanel({ clues, onInvestigate, onAddToCase }: CluePanelProps)
                 <div className="flex gap-1">
                   <button
                     onClick={() => onInvestigate(clue.id)}
-                    className="hud-button text-xs px-2 py-1 flex items-center gap-1 hover:shadow-pink-400/50"
+                    className={`hud-button text-xs px-2 py-1 flex items-center gap-1 ${clue.scanned ? 'opacity-50' : 'hover:shadow-pink-400/50'}`}
+                    disabled={clue.scanned}
                   >
                     <Eye size={12} />
-                    SCAN
+                    {clue.scanned ? 'SCANNED' : 'SCAN'}
                   </button>
                   <button
                     onClick={() => onAddToCase(clue.id)}
-                    className="hud-button text-xs px-2 py-1 flex items-center gap-1 hover:shadow-cyan-400/50"
+                    className={`hud-button text-xs px-2 py-1 flex items-center gap-1 ${clue.added ? 'opacity-50 text-green-400 border-green-500' : 'hover:shadow-cyan-400/50'}`}
+                    disabled={clue.added}
                   >
                     <Download size={12} />
-                    ADD
+                    {clue.added ? 'ADDED' : 'ADD'}
                   </button>
                 </div>
               </motion.div>

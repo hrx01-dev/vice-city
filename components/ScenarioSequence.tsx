@@ -3,22 +3,28 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const scenarioData: Record<string, { image: string, duration: number, text: string }[]> = {
+const scenarioData: Record<string, { image: string, duration: number, text: string, speech?: string }[]> = {
   '027': [
-    { image: '/c27_scene1.jpg', duration: 15, text: "EAST LOS SANTOS - 03:00 AM" },
-    { image: '/c27_scene2.jpg', duration: 15, text: "TARGET ON THE MOVE" },
-    { image: '/c27_scene3.jpg', duration: 15, text: "WEAPON DISCARDED" },
-    { image: '/c27_scene4.jpg', duration: 15, text: "LSPD IN PURSUIT" },
+    { image: '/c27_scene1.jpg', duration: 15, text: "TIME & LOCATION CONFIRMED", speech: "Synchronizing data. The camera timestamp of 02:17 AM contradicts the suspect's alibi. The neon reflection confirms they were at the Memory lounge." },
+    { image: '/c27_scene2.jpg', duration: 15, text: "TARGET IDENTIFIED", speech: "Cross-referencing face profile. Identity confirmed. The unknown person captured in the shadows is our prime suspect." },
+    { image: '/c27_scene3.jpg', duration: 15, text: "WEAPON CONFIRMED", speech: "Analyzing the suspect's hands. A drawn firearm is clearly visible, proving premeditated intent to use lethal force." },
+    { image: '/c27_scene4.jpg', duration: 15, text: "CASE CLOSED", speech: "By linking the timestamp, the drawn weapon, and the facial profile, the sequence of events is undeniable. Dispatching L S P D units to make the arrest." },
   ],
   '028': [
-    { image: '/c28_scene1.jpg', duration: 15, text: "VESPUCCI BLVD SUBWAY" },
-    { image: '/c28_scene2.jpg', duration: 15, text: "POWER FLUCTUATIONS DETECTED" },
-    { image: '/c28_scene3.jpg', duration: 15, text: "SIGNAL LOST" },
-    { image: '/c28_scene4.jpg', duration: 15, text: "NO ESCAPE" },
+    { image: '/c28_scene1.jpg', duration: 15, text: "TIMELINE ESTABLISHED", speech: "Reconstruction active. The camera timestamp of 02:34 AM proves the incident occurred long after the trains stopped running." },
+    { image: '/c28_scene2.jpg', duration: 15, text: "LOCATION VERIFIED", speech: "Analyzing the station signage. Uptown 42nd Street. This contradicts the initial report of them being at Vespucci." },
+    { image: '/c28_scene3.jpg', duration: 15, text: "COMMUNICATION SEVERED", speech: "The dropped smartphone confirms a struggle. The screen is still active, severing the last transmission just as the power grid failed." },
+    { image: '/c28_scene4.jpg', duration: 15, text: "CASE CLOSED", speech: "The timestamp, the station sign, and the abandoned phone trace a clear path of abduction. Sending coordinates to SWAT." },
   ],
   '029': [
-    { image: '/c29_scene1.jpg', duration: 30, text: "CYPRESS FLATS - SECURECORP HQ" },
-    { image: '/c29_scene2.jpg', duration: 30, text: "CRITICAL BREACH IN SECTOR 7" },
+    { image: '/c29_scene1.jpg', duration: 15, text: "BREACH POINT", speech: "Analyzing the shattered window. Glass patterns confirm the impact originated from the inside. This wasn't a break-in. It was a breakout." },
+    { image: '/c29_scene2.jpg', duration: 15, text: "THE ALTERCATION", speech: "The overturned chair indicates a sudden physical struggle. The suspect was surprised while accessing the main terminal." },
+    { image: '/c29_scene1.jpg', duration: 15, text: "BIOLOGICAL TRACE", speech: "Evidence marker 3 highlights a significant blood pool. The thief was severely injured before escaping through the window." },
+  ],
+  '030': [
+    { image: '/evidence_030.jpg', duration: 15, text: "THE RENDEZVOUS", speech: "The neon reflection confirms the meeting took place outside the Blue Room cocktail lounge, exactly as the informant claimed." },
+    { image: '/c30_scene4.jpg', duration: 15, text: "THE EXCHANGE GOES WRONG", speech: "The aluminum briefcase containing unregistered bearer bonds was dropped in a panic during an ambush." },
+    { image: '/evidence_030.jpg', duration: 15, text: "CRIME SCENE SECURED", speech: "Evidence marker 4 indicates police arrived on the scene before the suspects could retrieve the briefcase." }
   ]
 };
 
@@ -42,8 +48,31 @@ export function ScenarioSequence({ caseId, onComplete }: { caseId: string, onCom
       onComplete();
     }
 
-    return () => clearTimeout(timeout);
+    return () => {
+      clearTimeout(timeout);
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
   }, [currentSceneIndex, scenes, onComplete]);
+
+  useEffect(() => {
+    if (currentSceneIndex >= scenes.length) return;
+    const currentScene = scenes[currentSceneIndex];
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(currentScene.speech || currentScene.text);
+      utterance.rate = 0.85;
+      utterance.pitch = 0.4;
+      
+      const voices = window.speechSynthesis.getVoices();
+      const englishVoice = voices.find(v => v.lang.startsWith('en-US') || v.lang.startsWith('en-GB'));
+      if (englishVoice) utterance.voice = englishVoice;
+
+      window.speechSynthesis.speak(utterance);
+    }
+  }, [currentSceneIndex, scenes]);
 
   if (currentSceneIndex >= scenes.length) return null;
 
@@ -82,6 +111,21 @@ export function ScenarioSequence({ caseId, onComplete }: { caseId: string, onCom
             >
               {currentScene.text}
             </h2>
+          </motion.div>
+
+          {/* Transcript Subtitle */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5, duration: 1 }}
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 w-[80%] max-w-4xl text-center"
+          >
+            <p 
+              className="font-mono text-lg md:text-2xl text-cyan-50 bg-black/60 px-6 py-3 border-l-4 border-r-4 border-pink-500/80 mx-auto inline-block drop-shadow-xl backdrop-blur-sm"
+              style={{ textShadow: '1px 1px 3px black' }}
+            >
+              {currentScene.speech}
+            </p>
           </motion.div>
         </motion.div>
       </AnimatePresence>

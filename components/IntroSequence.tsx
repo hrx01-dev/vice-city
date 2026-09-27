@@ -9,11 +9,11 @@ export function IntroSequence({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
     setPhase(0);
 
-    const t1 = setTimeout(() => setPhase(1), 3500); // City skyline
-    const t2 = setTimeout(() => setPhase(2), 8500); // Nightclub
-    const t3 = setTimeout(() => setPhase(3), 13500); // Photo
-    const t4 = setTimeout(() => setPhase(4), 17500); // Flash + Title
-    const t5 = setTimeout(() => onComplete(), 21500); // End
+    const t1 = setTimeout(() => setPhase(1), 3500); // City skyline (Setting the scene)
+    const t2 = setTimeout(() => setPhase(2), 8500); // Detective intro (c27_scene1)
+    const t3 = setTimeout(() => setPhase(3), 14000); // The assignment (nightclub_exterior)
+    const t4 = setTimeout(() => setPhase(4), 19500); // Flash + Title
+    const t5 = setTimeout(() => onComplete(), 24000); // End
 
     return () => {
       clearTimeout(t1);
@@ -55,13 +55,18 @@ export function IntroSequence({ onComplete }: { onComplete: () => void }) {
             animate={{ opacity: 1, scale: 1, y: '5%' }}
             exit={{ opacity: 0 }}
             transition={{ duration: 5, ease: 'easeOut' }}
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 bg-cover bg-center flex items-end justify-center pb-24"
             style={{ backgroundImage: 'url(/city_skyline.jpg)' }}
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/80" />
-            <p className="absolute bottom-16 w-full text-center text-xs tracking-[0.3em] text-cyan-200/60 uppercase drop-shadow-md">
-              CAMERA DESCENDS OVER CITY...
-            </p>
+            <motion.p 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1, duration: 1.5 }}
+              className="z-10 text-center text-lg md:text-2xl font-serif text-cyan-100 tracking-wider drop-shadow-2xl px-6 py-4 bg-black/60 border-l border-cyan-500/50 max-w-3xl"
+            >
+              "Vice City P.D. Neural Archive Division.<br/><span className="text-pink-400">You're the newest detective on the night shift.</span>"
+            </motion.p>
           </motion.div>
         )}
 
@@ -71,14 +76,19 @@ export function IntroSequence({ onComplete }: { onComplete: () => void }) {
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 5, ease: 'easeOut' }}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: 'url(/nightclub_exterior.jpg)' }}
+            transition={{ duration: 5.5, ease: 'easeOut' }}
+            className="absolute inset-0 bg-cover bg-center flex items-end justify-center pb-24"
+            style={{ backgroundImage: 'url(/c27_scene1.jpg)' }}
           >
-            <div className="absolute inset-0 bg-black/60 bg-gradient-to-t from-black to-transparent" />
-            <p className="absolute bottom-16 w-full text-center text-xs tracking-[0.3em] text-cyan-200/60 uppercase drop-shadow-md">
-              A MYSTERIOUS CHARACTER STEPS OUT...
-            </p>
+            <div className="absolute inset-0 bg-black/40 bg-gradient-to-t from-black via-transparent to-black" />
+            <motion.p 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1, duration: 1.5 }}
+              className="z-10 text-center text-lg md:text-2xl font-serif text-amber-100 tracking-wider drop-shadow-2xl px-6 py-4 bg-black/60 border-l border-amber-500/50 max-w-3xl"
+            >
+              "The Chief just handed you a stack of corrupted case files. Your job? Restore the evidence, extract the clues, and send them upstairs."
+            </motion.p>
           </motion.div>
         )}
 
@@ -88,19 +98,19 @@ export function IntroSequence({ onComplete }: { onComplete: () => void }) {
             initial={{ opacity: 0, scale: 1 }}
             animate={{ opacity: 1, scale: 1.05 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 4, ease: 'easeIn' }}
-            className="absolute inset-0 bg-cover bg-center flex items-center justify-center"
-            style={{ backgroundImage: 'url(/old_photograph.jpg)' }}
+            transition={{ duration: 5.5, ease: 'easeIn' }}
+            className="absolute inset-0 bg-cover bg-center flex items-end justify-center pb-24"
+            style={{ backgroundImage: 'url(/nightclub_exterior.jpg)' }}
           >
-            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-black/60 bg-gradient-to-t from-black via-transparent to-black" />
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 1.5 }}
               className="z-10 text-center"
             >
-              <p className="text-2xl md:text-4xl font-serif text-amber-100/90 italic tracking-wider drop-shadow-2xl px-6 py-4 bg-black/40 border border-amber-900/30 rounded-sm">
-                "You want to remember?"
+              <p className="text-xl md:text-3xl font-serif text-white tracking-wider drop-shadow-2xl px-6 py-4 bg-black/60 border-l border-white/30">
+                "They call it forensic reconstruction...<br/>But on the streets, they just call you the..."
               </p>
             </motion.div>
           </motion.div>

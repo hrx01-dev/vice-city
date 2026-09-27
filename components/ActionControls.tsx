@@ -13,6 +13,7 @@ interface ActionControlsProps {
   caseNumber: string;
   totalCases: number;
   hasChanges: boolean;
+  canExport: boolean;
 }
 
 export function ActionControls({
@@ -24,6 +25,7 @@ export function ActionControls({
   caseNumber,
   totalCases,
   hasChanges,
+  canExport,
 }: ActionControlsProps) {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
@@ -38,13 +40,17 @@ export function ActionControls({
   return (
     <div className="flex gap-2 flex-wrap">
       <motion.button
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
+        whileHover={canExport ? { scale: 1.03 } : {}}
+        whileTap={canExport ? { scale: 0.97 } : {}}
         onClick={onExport}
-        className="hud-button flex items-center gap-2 hover:shadow-pink-400/50"
+        disabled={!canExport}
+        title={!canExport ? "Must make edits and scan all clues to export" : ""}
+        className={`hud-button flex items-center gap-2 ${
+          canExport ? 'hover:shadow-pink-400/50' : 'opacity-50 cursor-not-allowed'
+        }`}
       >
         <Download size={16} />
-        EXPORT
+        SEND EVIDENCE
       </motion.button>
 
       <motion.button

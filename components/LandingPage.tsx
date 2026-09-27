@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Cpu, Radio, ArrowRight, ChevronDown, Fingerprint, FileSearch, Wand2, ScanEye } from 'lucide-react';
+import { Cpu, Radio, ArrowRight, ChevronDown, Fingerprint, FileSearch, Wand2, ScanEye, Target } from 'lucide-react';
 import { VicePalm } from '@/components/VicePalm';
 
 const caseFiles = [
@@ -252,6 +252,92 @@ export function LandingPage({ onEnter }: { onEnter: (caseIndex: number) => void 
                 </motion.div>
               );
             })}
+          </div>
+
+          {/* ============ HOW TO ACE THIS ============ */}
+          <div className="mt-32 pt-28 border-t border-pink-400/20">
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-20"
+            >
+              <h2 className="font-display text-vice-gradient text-5xl md:text-7xl tracking-wide mb-6">HOW TO ACE THIS</h2>
+              <p className="text-cyan-300/60 text-base md:text-lg max-w-2xl mx-auto">
+                The EXPORT button is locked. You must prove your detective skills to unlock the cinematic memory.
+              </p>
+            </motion.div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.5 }}
+                className="hud-panel hud-border flex flex-col h-full overflow-hidden group hover:-translate-y-2 transition-transform duration-300"
+              >
+                <div className="relative h-48 overflow-hidden border-b border-cyan-400/30">
+                  <img src="/c27_scene2.jpg" alt="Scanning Clues" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-cyan-900/40 mix-blend-overlay" />
+                </div>
+                <div className="p-6 md:p-8 flex-1 flex flex-col">
+                  <h3 className="hud-text-pink text-sm md:text-base mb-3 font-bold tracking-widest flex items-center gap-2">
+                    <ScanEye size={18} /> 1. SCAN ALL CLUES
+                  </h3>
+                  <p className="text-cyan-100/70 text-xs md:text-sm leading-relaxed">
+                    Read and click every single clue in the right-hand investigation panel to mark it as SCANNED before you can proceed.
+                  </p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="hud-panel hud-border flex flex-col h-full overflow-hidden group hover:-translate-y-2 transition-transform duration-300"
+              >
+                <div className="relative h-48 overflow-hidden border-b border-cyan-400/30">
+                  <img src="/evidence_028.jpg" alt="Editing Evidence" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-cyan-900/40 mix-blend-overlay" />
+                </div>
+                <div className="p-6 md:p-8 flex-1 flex flex-col">
+                  <h3 className="hud-text-pink text-sm md:text-base mb-3 font-bold tracking-widest flex items-center gap-2">
+                    <Target size={18} /> 2. TARGET & EXTRACT
+                  </h3>
+                  <p className="text-cyan-100/70 text-xs md:text-sm leading-relaxed">
+                    Select the new EXTRACT tool (Target icon) and click the hidden piece of evidence within the image to secure it.
+                  </p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="hud-panel hud-border bg-pink-900/10 border-pink-500/50 shadow-[0_0_20px_rgba(255,47,143,0.15)] flex flex-col h-full overflow-hidden group hover:-translate-y-2 transition-transform duration-300"
+              >
+                <div className="relative h-48 overflow-hidden border-b border-pink-500/50">
+                  <img src="/c30_scene4.jpg" alt="Cinematic Export" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-pink-900/30 mix-blend-overlay" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="hud-button bg-green-500/20 border-green-500 text-green-400 text-[10px] tracking-widest font-bold px-3 py-1 animate-pulse">
+                      UNLOCKED
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6 md:p-8 flex-1 flex flex-col">
+                  <h3 className="text-pink-400 text-sm md:text-base mb-3 font-bold tracking-widest">
+                    3. EDIT & EXPORT
+                  </h3>
+                  <p className="text-cyan-100/70 text-xs md:text-sm leading-relaxed">
+                    Make a forensic edit using any other tool. Once you scan, extract, and edit, the EXPORT button will glow green!
+                  </p>
+                </div>
+              </motion.div>
+            </div>
           </div>
 
           <motion.div
