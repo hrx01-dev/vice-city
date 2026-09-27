@@ -1,11 +1,11 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Bebas_Neue, Fragment_Mono, Instrument_Serif } from 'next/font/google'
+import { Fragment_Mono, Instrument_Serif } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 
-const bebasNeue = Bebas_Neue({
-  subsets: ['latin'],
-  weight: '400',
+const pricedown = localFont({
+  src: '../public/pricedown.otf',
   variable: '--font-bebas',
   display: 'swap',
 })
@@ -59,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${bebasNeue.variable} ${fragmentMono.variable} ${instrumentSerif.variable}`}>
+    <html lang="en" className={`${pricedown.variable} ${fragmentMono.variable} ${instrumentSerif.variable}`}>
       <body className="antialiased font-mono">
         {children}
         <div className="vice-grain" aria-hidden="true" />
