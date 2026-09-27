@@ -338,7 +338,8 @@ export default function Page() {
           </div>
         </motion.header>
 
-        <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_300px] gap-3 items-stretch">
+        <section className="grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-3 items-stretch">
+          <CluePanel clues={clues} onInvestigate={investigate} onAddToCase={addToCase} />
 
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
@@ -445,8 +446,6 @@ export default function Page() {
               canExport={canExport}
             />
           </motion.div>
-
-          <CluePanel clues={clues} onInvestigate={investigate} onAddToCase={addToCase} />
         </section>
 
         <footer className="flex flex-col md:flex-row justify-between gap-2 border-t border-pink-400/30 pt-3 text-[10px] tracking-widest text-cyan-300/50">

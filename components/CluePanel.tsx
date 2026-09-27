@@ -92,12 +92,6 @@ export function CluePanel({ clues, onInvestigate, onAddToCase }: CluePanelProps)
           </AnimatePresence>
         )}
       </div>
-      <div className="border-t border-pink-400/30 pt-2">
-        <button className="hud-button w-full text-xs flex items-center justify-center gap-1">
-          <Zap size={14} />
-          SAVE MEMORY
-        </button>
-      </div>
     </motion.div>
   );
 }
