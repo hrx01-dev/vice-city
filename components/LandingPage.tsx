@@ -349,7 +349,7 @@ export function LandingPage({ onEnter }: { onEnter: (caseIndex: number) => void 
           >
             <div>
               <div className="hud-text-cyan text-xs tracking-[0.3em] mb-1">READY WHEN YOU ARE</div>
-              <p className="text-cyan-100/70 text-sm">Case #027 is open. The clock reads 02:17 AM. Somebody doesn't want you to remember.</p>
+              <p className="text-cyan-100/70 text-sm">Case #{caseFiles[selected].number} is open. The clock reads 02:17 AM. Somebody doesn't want you to remember.</p>
             </div>
             <motion.button
               onClick={() => onEnter(selected)}

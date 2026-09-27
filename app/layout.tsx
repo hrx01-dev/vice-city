@@ -26,7 +26,7 @@ const instrumentSerif = Instrument_Serif({
 })
 
 export const metadata: Metadata = {
-  title: 'Memory Dealer - Case #027',
+  title: 'Memory Dealer',
   description: 'A neon-soaked, GTA VI-inspired forensic memory investigation workstation for Vice City. Restore corrupted evidence, chase clues, and relive the case through the React Image Editor.',
   generator: 'v0.app',
   icons: {

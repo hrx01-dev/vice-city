@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ImageEditor, { type ImageEditorRef } from '@unlayer/react-image-editor';
 import { Activity, AlertTriangle, Cpu, FileSearch, Radio, Save, Target } from 'lucide-react';
@@ -19,6 +19,10 @@ import { casesData } from '@/lib/casesData';
 export default function Page() {
   const editorRef = useRef<ImageEditorRef>(null);
   const [caseIndex, setCaseIndex] = useState(0);
+
+  useEffect(() => {
+    document.title = `Memory Dealer // Case #${casesData[caseIndex].number}`;
+  }, [caseIndex]);
   const [activeTool, setActiveTool] = useState('');
   const [showLanding, setShowLanding] = useState(true);
   const [showIntro, setShowIntro] = useState(false);
