@@ -444,6 +444,7 @@ export default function Page() {
               totalCases={casesData.length}
               hasChanges={hasChanges}
               canExport={canExport}
+              savedMemoryUrl={savedMemoryUrl}
             />
           </motion.div>
         </section>

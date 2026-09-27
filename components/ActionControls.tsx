@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Download, RotateCcw, ChevronLeft, ChevronRight, Share2 } from 'lucide-react';
 
 interface ActionControlsProps {
   onExport: () => void;
@@ -14,6 +14,7 @@ interface ActionControlsProps {
   totalCases: number;
   hasChanges: boolean;
   canExport: boolean;
+  savedMemoryUrl: string | null;
 }
 
 export function ActionControls({
@@ -26,6 +27,7 @@ export function ActionControls({
   totalCases,
   hasChanges,
   canExport,
+  savedMemoryUrl,
 }: ActionControlsProps) {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
@@ -34,6 +36,28 @@ export function ActionControls({
       setShowResetConfirm(true);
     } else {
       onReset();
+    }
+  };
+
+  const handleShare = () => {
+    if (!savedMemoryUrl) return;
+
+    const text = `I just uncovered the truth in Vice City Police Department's Neural Archive! Case #${caseNumber} Solved. #MemoryDealer #ViceCity`;
+
+    try {
+      // 1. Force the image download
+      const a = document.createElement('a');
+      a.href = savedMemoryUrl;
+      a.download = `evidence_${caseNumber}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      
+      // 2. Open Twitter intent synchronously to avoid popup blockers
+      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+      window.open(twitterUrl, '_blank', 'noopener,noreferrer');
+    } catch (err) {
+      console.error('Share action failed:', err);
     }
   };
 
@@ -52,6 +76,20 @@ export function ActionControls({
         <Download size={16} />
         SEND EVIDENCE
       </motion.button>
+
+      {savedMemoryUrl && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          onClick={handleShare}
+          className="hud-button flex items-center gap-2 border-cyan-400 text-cyan-400 hover:shadow-cyan-400/50 hover:bg-cyan-900/20"
+        >
+          <Share2 size={16} />
+          SHARE EVIDENCE
+        </motion.button>
+      )}
 
       <motion.button
         whileHover={{ scale: 1.03 }}

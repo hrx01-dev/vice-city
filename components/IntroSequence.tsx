@@ -78,7 +78,7 @@ export function IntroSequence({ onComplete }: { onComplete: () => void }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 5.5, ease: 'easeOut' }}
             className="absolute inset-0 bg-cover bg-center flex items-end justify-center pb-24"
-            style={{ backgroundImage: 'url(/c27_scene1.jpg)' }}
+            style={{ backgroundImage: 'url(/detective.jpg)' }}
           >
             <div className="absolute inset-0 bg-black/40 bg-gradient-to-t from-black via-transparent to-black" />
             <motion.p 

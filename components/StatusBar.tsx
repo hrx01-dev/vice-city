@@ -44,9 +44,14 @@ export function StatusBar({ caseNumber, memoryState, stabilityScore, editCount }
       style={{ borderBottom: '2px solid var(--vice-pink)', padding: '0.75rem 1rem' }}
     >
       <div className="flex justify-between items-center gap-4 flex-wrap">
-        <div className="flex items-center gap-8">
-          <div className="hud-text-pink text-sm">
-            CASE #{caseNumber}
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.3)] shrink-0">
+              <img src="/detective.jpg" alt="MC Detective" className="w-full h-full object-cover" />
+            </div>
+            <div className="hud-text-pink text-sm">
+              CASE #{caseNumber}
+            </div>
           </div>
           <div className={`hud-text-pink text-sm flex items-center gap-2 ${getStatusColor()}`}>
             <span className="inline-block w-2 h-2 bg-current rounded-full animate-pulse"></span>
